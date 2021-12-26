@@ -1,29 +1,24 @@
 //3-2 큰 수의  법칙
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int static compare(const void* first, const void* second) {
-	if (*(int*)first > *(int*)second)
-		return 1;
-	else if (*(int*)first < *(int*)second)
-		return -1;
-	else
-		return 0;
+int compare(const void* a, const void* b) {
+	return *(int*)a - *(int*)b;    // 오름차순
 }
 
 int main(void) {
-	int n = 0, m = 0, k = 0, first_num = 0, second_num = 0, cnt = 0, sum = 0;
-	int a[10000] = { 0, };
-
+	int n, m, k;
+	int* a;
+	int first, second;
 	scanf("%d %d %d", &n, &m, &k);
-
-	for (int i = 0; i < n; i++) scanf("%d", &a[i]);
-
+	a = calloc(n, sizeof(int));
+	for (int i = 0; i < n; i++) {
+		scanf(" %d", &a[i]);
+	}
 	qsort(a, n, sizeof(int), compare);
-	first_num = a[n - 1];
-	second_num = a[n - 2];
-
-	/*
+	first = a[n - 1];
+	second = a[n - 2];
+  /*
 	* 도출과정
 	* Ex) A{2, 4, 5, 4, 6}, m = 8, k = 3
 	* => 6 + 6 + 6 +5 + 6 + 6 + 6 + 5 = 46
@@ -32,10 +27,6 @@ int main(void) {
 	* m/(k+1)의 나머지는 큰 수가 추가로 더해지는 횟수
 	* ∴ 가장 큰 수가 더해지는 횟수 = m/(k+1)*k + m%(k+1)
 	*/
-	cnt = (int)(m / (k + 1)) * k + m % (k + 1);
-
-	sum += first_num * cnt;
-	sum += (m - cnt) * second_num;
-
-	printf("%d", sum);
+	printf("%d\n", m / (k + 1) * (k * first + second) + m % (k + 1));
+	free(a);
 }
